@@ -1,47 +1,122 @@
 # CSADPRG
 Advanced Programming Techniques
+ 
+Calculator Language Study
 
+Build the same CLI calculator in Go, R, Ruby, and Kotlin.
 
-Calculator
+The goal is to use one project to practice programming while directly experimenting with language features and computer science concepts inside the code.
 
-A command-line calculator implemented in Go, R, Ruby, and Kotlin to practice each language's syntax, standard library, error handling, and idiomatic programming patterns.
+Calculator Features
 
-Features
+Implement:
 
-- Basic arithmetic: "+", "-", "*", "/", "%", "^"
-- Decimal and negative numbers
+- "+", "-", "*", "/", "%", "^"
+- Integers, floats, and negative numbers
+- Parentheses and operator precedence
 - Variables and constants
 - Scientific functions
-- Parentheses and operator precedence
 - Calculation history
-- Interactive commands
-- Input error handling
+- Interactive CLI
+- Error handling
+- Automated tests
+- Tokenizer
+- Parser
+- Abstract Syntax Tree (AST)
+- Expression evaluation
 
-Commands
+Learning Requirements
 
-help
-history
-clear
-variables
-clearvars
-exit
+Do not simply translate the same implementation between languages.
 
-Example
+For each language, use the project to experiment with how the language works.
 
-> x = 10
-10
+The code should contain experiments, TODOs, comments, tests, and alternative implementations for concepts such as:
 
-> x * 5 + 2
-52
+- Static vs dynamic typing
+- Type inference
+- Type conversion
+- Value vs reference semantics
+- Mutability and immutability
+- Functions and closures
+- Higher-order functions
+- OOP
+- Interfaces / protocols
+- Generics
+- Error handling
+- Collections and data structures
+- Memory allocation
+- Garbage collection
+- Recursion
+- Concurrency
+- Parallelism
+- Performance
+- Compilation and runtime behavior
 
-> sqrt(25)
-5
+Parser
 
-> history
-1. x = 10
-2. x * 5 + 2 = 52
-3. sqrt(25) = 5
+Build the calculator progressively:
 
-Goal
+Input
+  ↓
+Tokenizer
+  ↓
+Tokens
+  ↓
+Parser
+  ↓
+AST
+  ↓
+Evaluator
+  ↓
+Result
 
-Implement the same calculator specification in each language while using that language's own idioms and features.
+Use the parser to experiment with concepts such as:
+
+- Recursive descent
+- Recursion
+- Operator precedence
+- Tree data structures
+- Pattern matching / type dispatch
+- Object-oriented vs functional designs
+
+Comparative Experiments
+
+Where meaningful, implement the same feature in multiple ways.
+
+For example:
+
+TODO: Implement expression evaluation using
+      1. OOP
+      2. Functional style
+      3. A language-specific idiomatic approach
+
+Then use tests or small benchmark programs to observe the differences.
+
+Other experiments can include:
+
+TODO: Compare mutable vs immutable state
+
+TODO: Compare exception-based vs value-based error handling
+
+TODO: Compare recursive vs iterative evaluation
+
+TODO: Compare different collection types
+
+TODO: Test reference/value behavior
+
+TODO: Measure memory usage where possible
+
+TODO: Benchmark large numbers of expressions
+
+TODO: Experiment with concurrency where supported
+
+Important Rule
+
+The code is the study.
+
+Do not create a separate theoretical report. Learn the concepts by implementing them, breaking them, testing them, and comparing the behavior of Go, R, Ruby, and Kotlin directly in the projects.
+
+Final Goal
+
+End up with four calculators that perform the same job, while the code itself demonstrates how different programming languages approach the same underlying problems.
