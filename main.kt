@@ -17,19 +17,19 @@ private class CalculatorException(message: String) :
 
 private class Lexer(private val source: String) { //converts raw source code into tokens
     
-    private var position = 0
+    private var position = 0 //just a pointer, since we get a string it does it character by character
 
-    fun tokenize(): List<Token> {
-        val tokens = mutableListOf<Token>()
+    fun tokenize(): List<Token> { //list of tokens is the input transformed into output
+        val tokens = mutableListOf<Token>() //empty container
 
-        while (position < source.length) {
-            val c = source[position]
+        while (position < source.length) { //iterate
+            val c = source[position] //read char at the current position
 
             when {
-                c.isWhitespace() -> position++
+                c.isWhitespace() -> position++ //ignore
 
                 c.isDigit() || c == '.' ->
-                    tokens.add(readNumber())
+                    tokens.add(readNumber()) //one token, but would it be the same number??
 
                 c.isLetter() || c == '_' ->
                     tokens.add(readIdentifier())
