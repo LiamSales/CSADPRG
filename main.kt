@@ -1,24 +1,5 @@
-
 import kotlin.math.*
 import java.math.BigDecimal
-
-// ============================================================
-// KOTLIN CALCULATOR LANGUAGE STUDY
-//
-// Concepts:
-// - Static typing and type inference
-// - Sealed interfaces and data classes
-// - Recursive descent parsing and AST evaluation
-// - Mutable vs immutable state
-// - Higher-order functions and closures
-// - Exceptions and error propagation
-// - Collections, recursion, and iteration
-// - Testing and numerical precision
-// ============================================================
-
-// ============================================================
-// 1. TOKENS AND LEXER
-// ============================================================
 
 private enum class TokenType {
     NUMBER, IDENTIFIER,
@@ -29,12 +10,13 @@ private enum class TokenType {
 private data class Token(
     val type: TokenType,
     val text: String
-)
+) //datatype + data
 
 private class CalculatorException(message: String) :
     RuntimeException(message)
 
-private class Lexer(private val source: String) {
+private class Lexer(private val source: String) { //converts raw source code into tokens
+    
     private var position = 0
 
     fun tokenize(): List<Token> {
@@ -155,25 +137,6 @@ private data class FunctionExpression(
     val name: String,
     val arguments: List<Expression>
 ) : Expression
-
-// ============================================================
-// 3. RECURSIVE DESCENT PARSER
-// ============================================================
-
-/*
- * Precedence, lowest to highest:
- * + -
- * * / %
- * unary signs
- * ^
- * primary expressions
- *
- * Exponentiation is right-associative:
- * 2^3^2 = 2^(3^2) = 512
- *
- * Unary signs bind less tightly than exponentiation:
- * -2^2 = -(2^2) = -4
- */
 
 private class Parser(private val tokens: List<Token>) {
     private var position = 0
