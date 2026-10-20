@@ -50,7 +50,7 @@ private class Lexer(private val source: String) { //converts raw source code int
                         )
                     }
 
-                    tokens.add(Token(type, c.toString()))
+                    tokens.add(Token(type, c.toString())) 
                     position++
                 }
             }
@@ -60,12 +60,12 @@ private class Lexer(private val source: String) { //converts raw source code int
         return tokens
     }
 
-    private fun readNumber(): Token {
-        val start = position
+    private fun readNumber(): Token { // no parameter
+        val start = position //position is still in the scope of the class
         var decimalSeen = false
 
-        while (position < source.length) {
-            val c = source[position]
+        while (position < source.length) { //still in the scope
+            val c = source[position] //just like the lexer
 
             when {
                 c.isDigit() -> position++
@@ -73,9 +73,9 @@ private class Lexer(private val source: String) { //converts raw source code int
                 c == '.' && !decimalSeen -> {
                     decimalSeen = true
                     position++
-                }
+                } //only one decimal pass, but how do we know where to keep decimal
 
-                else -> break
+                else -> break //breaks when not number nor first decimal
             }
         }
 
