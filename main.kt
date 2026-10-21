@@ -109,6 +109,14 @@ private class Lexer(private val source: String) { //converts raw source code int
     }
 } //ez
 
+// The AST represents the structure of an expression.
+
+// The lexer identifies tokens, but tokens alone do not tell us
+// how operations are grouped. The parser creates this tree.
+
+// A sealed interface restricts the direct types that implement
+// Expression, allowing Kotlin to check the cases in a when block.
+
 
 private sealed interface Expression //sealed means inheritance only inside this module (?????) 
 
