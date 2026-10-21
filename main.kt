@@ -110,7 +110,7 @@ private class Lexer(private val source: String) { //converts raw source code int
 } //ez
 
 
-private sealed interface Expression
+private sealed interface Expression //sealed means inheritance only inside this module (?????) 
 
 private data class NumberExpression(
     val value: Double
