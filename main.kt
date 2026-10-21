@@ -29,7 +29,8 @@ private class Lexer(private val source: String) { //converts raw source code int
                 c.isWhitespace() -> position++ //ignore
 
                 c.isDigit() || c == '.' ->
-                    tokens.add(readNumber()) //one token, but would it be the same number??
+                    tokens.add(readNumber()) //one token, thats the entire number, basically calls this, moves control (well it never leaves) of our position value, duplicates the cursor (like a for loop)
+//returns the whole thing as a single token (type included) 
 
                 c.isLetter() || c == '_' ->
                     tokens.add(readIdentifier())
@@ -50,19 +51,19 @@ private class Lexer(private val source: String) { //converts raw source code int
                         )
                     }
 
-                    tokens.add(Token(type, c.toString())) 
+                    tokens.add(Token(type, c.toString())) // this is only one character then to string
                     position++
                 }
             }
         }
 
-        tokens.add(Token(TokenType.EOF, ""))
+        tokens.add(Token(TokenType.EOF, "")) //manually add the EOF and empty string as the last part of our list
         return tokens
     }
 
     private fun readNumber(): Token { // no parameter
-        val start = position //position is still in the scope of the class
-        var decimalSeen = false
+        val start = position //position is still in the scope of the class, local start
+        var decimalSeen = false //only one decimal
 
         while (position < source.length) { //still in the scope
             val c = source[position] //just like the lexer
@@ -79,16 +80,16 @@ private class Lexer(private val source: String) { //converts raw source code int
             }
         }
 
-        val text = source.substring(start, position)
+        val text = source.substring(start, position) //local start until where we ended,
 
         if (text == ".") {
             throw CalculatorException("Invalid number '.'")
-        }
+        } //except if its only the decimal
 
         return Token(TokenType.NUMBER, text)
     }
 
-    private fun readIdentifier(): Token {
+    private fun readIdentifier(): Token { //probably for coeficcients, just non operation and non-number/decimal
         val start = position
 
         while (
@@ -106,11 +107,8 @@ private class Lexer(private val source: String) { //converts raw source code int
             source.substring(start, position)
         )
     }
-}
+} //ez
 
-// ============================================================
-// 2. ABSTRACT SYNTAX TREE
-// ============================================================
 
 private sealed interface Expression
 
