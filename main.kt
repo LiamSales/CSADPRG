@@ -107,7 +107,7 @@ private class Lexer(private val source: String) { //converts raw source code int
             source.substring(start, position)
         )
     }
-} //ez
+}
 
 // The AST represents the structure of an expression.
 
@@ -118,7 +118,7 @@ private class Lexer(private val source: String) { //converts raw source code int
 // Expression, allowing Kotlin to check the cases in a when block.
 
 
-private sealed interface Expression //sealed means inheritance only inside this module (?????) 
+private sealed interface Expression //shared type, different dataclasses have a common type
 
 private data class NumberExpression(
     val value: Double
@@ -131,24 +131,24 @@ private data class VariableExpression(
 private data class UnaryExpression(
     val operator: TokenType,
     val operand: Expression
-) : Expression
+) : Expression // sign + number
 
 private data class BinaryExpression(
     val left: Expression,
     val operator: TokenType,
     val right: Expression
-) : Expression
+) : Expression // number, arithmetic, number
 
 private data class FunctionExpression(
     val name: String,
     val arguments: List<Expression>
-) : Expression
+) : Expression // sqrt, et al
 
 private class Parser(private val tokens: List<Token>) {
-    private var position = 0
+    private var position = 0 //new beginning were done with the lexer
 
     fun parse(): Expression {
-        val expression = parseAddition()
+        val expression = parseAddition() //
 
         if (current().type != TokenType.EOF) {
             throw CalculatorException(
