@@ -144,6 +144,25 @@ private data class FunctionExpression(
     val arguments: List<Expression>
 ) : Expression // sqrt, et al
 
+    private fun current(): Token = tokens[position]
+
+    private fun advance(): Token = tokens[position++]
+
+    private fun match(type: TokenType): Boolean {
+        if (current().type != type) return false
+
+        advance()
+        return true
+    }
+
+    private fun expect(type: TokenType) {
+        if (!match(type)) {
+            throw CalculatorException(
+                "Expected $type, found '${current().text}'"
+            )
+        }
+    }
+
 private class Parser(private val tokens: List<Token>) {
     private var position = 0 //new beginning were done with the lexer
 
@@ -152,14 +171,15 @@ private class Parser(private val tokens: List<Token>) {
 
         if (current().type != TokenType.EOF) {
             throw CalculatorException(
-                "Unexpected token '${current().text}'"
+                "Unexpected token '${current().text}'" //If parsing finishes but there are still unexpected tokens, the parser throws an exception
             )
         }
 
         return expression
     }
 
-    private fun parseAddition(): Expression {
+    private fun parseAddition(): Expression { //recursive-descent parsing, breaks down into identifying smaller tasks, stalgcm type
+        
         var expression = parseMultiplication()
 
         while (
@@ -179,7 +199,7 @@ private class Parser(private val tokens: List<Token>) {
         return expression
     }
 
-    private fun parseMultiplication(): Expression {
+    private fun parseMultiplication(): Expression { //because we do it by term, higher prio, but why does it go to unary before power
         var expression = parseUnary()
 
         while (
@@ -277,25 +297,6 @@ private class Parser(private val tokens: List<Token>) {
 
             else -> throw CalculatorException(
                 "Expected a number, variable, or parenthesized expression"
-            )
-        }
-    }
-
-    private fun current(): Token = tokens[position]
-
-    private fun advance(): Token = tokens[position++]
-
-    private fun match(type: TokenType): Boolean {
-        if (current().type != type) return false
-
-        advance()
-        return true
-    }
-
-    private fun expect(type: TokenType) {
-        if (!match(type)) {
-            throw CalculatorException(
-                "Expected $type, found '${current().text}'"
             )
         }
     }
