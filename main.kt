@@ -199,7 +199,7 @@ private class Parser(private val tokens: List<Token>) {
         return expression
     }
 
-    private fun parseMultiplication(): Expression { //because we do it by term, higher prio, but why does it go to unary before power
+    private fun parseMultiplication(): Expression { //we simply follow the JVM compiler precedence,now it CAN work without this but takes more work and we add a leading 0 anyway
         var expression = parseUnary()
 
         while (
