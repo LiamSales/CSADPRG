@@ -221,13 +221,17 @@ private class Parser(private val tokens: List<Token>) {
     }
 
     private fun parseUnary(): Expression {
+        
+        //so we actually do this first, we dont call the parse power yet
+        
         if ( //not while, just an if
             current().type == TokenType.PLUS ||
             current().type == TokenType.MINUS
         ) {
-            val operator = advance().type
-
-            return UnaryExpression(
+            val operator = advance().type //new var, operator is equal to the sign, but why do we advance rather than current? so KOTLIN gets type before evaulating exp
+//POSTFIX USE VARIABLE CURRENT VALUE IN EXPRESSION AND THEN ++ BECAUSE ++ IS AFTER
+            
+            return UnaryExpression( //why do we return immediately???
                 operator,
                 parseUnary()
             )
