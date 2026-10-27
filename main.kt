@@ -229,25 +229,25 @@ private class Parser(private val tokens: List<Token>) {
             current().type == TokenType.MINUS
         ) {
             val operator = advance().type //new var, operator is equal to the sign, but why do we advance rather than current? so KOTLIN gets type before evaulating exp
-//POSTFIX USE VARIABLE CURRENT VALUE IN EXPRESSION AND THEN ++ BECAUSE ++ IS AFTER
+//POSTFIX USE VARIABLE CURRENT VALUE IN EXPRESSION AND THEN ++ BECAUSE ++ IS AFTER, so ok we save the operator
             
             return UnaryExpression( //why do we return immediately???
                 operator,
-                parseUnary()
+                parseUnary()// return then recurse, basically just go back but current is in a new postion because its not declared in this functions scope
             )
         }
 
-        return parsePower()
+        return parsePower() //but then nothing more after this for unary, its only job was to get if the first ever char is a +/-, then it just proceeds to power
     }
 
     private fun parsePower(): Expression {
-        val left = parsePrimary()
+        val left = parsePrimary() //but left here is just another name for expression
 
         if (match(TokenType.CARET)) {
             return BinaryExpression(
                 left,
                 TokenType.CARET,
-                parseUnary()
+                parseUnary() //our small base case (only unary expressions in exponents? the pointer doesnt reset either so how does this work with operator saving, wont it overwrite??
             )
         }
 
