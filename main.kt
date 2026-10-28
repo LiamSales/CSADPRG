@@ -241,10 +241,11 @@ private class Parser(private val tokens: List<Token>) {
     }
 
     private fun parsePower(): Expression {
-        val left = parsePrimary() //but left here is just another name for expression
+        
+        val left = parsePrimary() //but left here is just another name for expression, we know its not a caret
 
-        if (match(TokenType.CARET)) {
-            return BinaryExpression(
+        if (match(TokenType.CARET)) { // we already have types of expressions defined up there as data classes, and additions base case gives us a binex
+            return BinaryExpression( //left operator right
                 left,
                 TokenType.CARET,
                 parseUnary() //our small base case (only unary expressions in exponents? the pointer doesnt reset either so how does this work with operator saving, wont it overwrite??
@@ -254,12 +255,13 @@ private class Parser(private val tokens: List<Token>) {
         return left
     }
 
-    private fun parsePrimary(): Expression {
+    private fun parsePrimary(): Expression { //where the real parsing happens??
         val token = current()
 
         when (token.type) {
             TokenType.NUMBER -> {
-                advance()
+                
+                advance() //so we just advance because its al numbers
 
                 val value = token.text.toDoubleOrNull()
                     ?: throw CalculatorException(
