@@ -255,15 +255,15 @@ private class Parser(private val tokens: List<Token>) {
         return left
     }
 
-    private fun parsePrimary(): Expression { //where the real parsing happens??
-        val token = current()
+    private fun parsePrimary(): Expression { //where the real parsing happens?? recognizes the basic building blocks of expressions.
+        val token = current() 
 
         when (token.type) {
             TokenType.NUMBER -> {
                 
                 advance() //so we just advance because its al numbers
 
-                val value = token.text.toDoubleOrNull()
+                val value = token.text.toDoubleOrNull() //important part, converts strings into doubles
                     ?: throw CalculatorException(
                         "Invalid number '${token.text}'"
                     )
