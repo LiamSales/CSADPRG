@@ -248,11 +248,11 @@ private class Parser(private val tokens: List<Token>) {
             return BinaryExpression( //left operator right
                 left,
                 TokenType.CARET,
-                parseUnary() //our small base case (only unary expressions in exponents? the pointer doesnt reset either so how does this work with operator saving, wont it overwrite??
-            )
+                parseUnary() // can cycle back here
+            ) //yes exponent (operand, operator, operand)
         }
 
-        return left
+        return left // no exponent default case
     }
 
     private fun parsePrimary(): Expression { //where the real parsing happens?? recognizes the basic building blocks of expressions.
