@@ -263,6 +263,8 @@ private class Parser(private val tokens: List<Token>) {
                 
                 advance() //so we just advance because its al numbers
 
+// its just passes? how do we save??
+
                 val value = token.text.toDoubleOrNull() //important part, converts strings into doubles
                     ?: throw CalculatorException(
                         "Invalid number '${token.text}'"
