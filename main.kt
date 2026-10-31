@@ -259,21 +259,20 @@ private class Parser(private val tokens: List<Token>) {
         val token = current() 
 
         when (token.type) {
-            TokenType.NUMBER -> {
+            TokenType.NUMBER -> { //remember everything is already tokenized, so its all sorted and handled by this point. we just need to arrange stuff
                 
-                advance() //so we just advance because its al numbers
-
-// its just passes? how do we save??
+                advance() //so... the token after the number, why do we advance?
 
                 val value = token.text.toDoubleOrNull() //important part, converts strings into doubles
                     ?: throw CalculatorException(
                         "Invalid number '${token.text}'"
                     )
 
-                return NumberExpression(value)
+                return NumberExpression(value) //this gets passed back to the other parsers
             }
 
             TokenType.IDENTIFIER -> {
+                
                 advance()
 
                 if (match(TokenType.LPAREN)) {
