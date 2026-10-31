@@ -255,14 +255,19 @@ private class Parser(private val tokens: List<Token>) {
         return left // no exponent default case
     }
 
+    //but how do we know only parentheses and numbers get passed to this???
+    
     private fun parsePrimary(): Expression { //where the real parsing happens?? recognizes the basic building blocks of expressions.
-        val token = current() 
+        
+        val token = current() //we save here then THIS is whats used,
 
         when (token.type) {
             TokenType.NUMBER -> { //remember everything is already tokenized, so its all sorted and handled by this point. we just need to arrange stuff
                 
-                advance() //so... the token after the number, why do we advance?
+                advance() //Because the parser has finished recognizing the current token as a number. It needs to move past that token so the next parser operation can handle whatever comes afterward.
+                //ok this advance is not for us anymore, advance moves the bigger scope (class) token list, so that we can parse whats the next list
 
+                //this whole class basically just converts to usable types??
                 val value = token.text.toDoubleOrNull() //important part, converts strings into doubles
                     ?: throw CalculatorException(
                         "Invalid number '${token.text}'"
