@@ -312,7 +312,9 @@ private class Parser(private val tokens: List<Token>) {
             )
         }
     }
-}
+} //figure out why only identifie and number, no variables at all.
+
+//actually trace parsing completely on paper
 
 // ============================================================
 // 4. EXPRESSION EVALUATOR
