@@ -1,6 +1,8 @@
 import kotlin.math.*
 import java.math.BigDecimal
 
+//parsing power and unary and binary i dont get
+
 private enum class TokenType {
     NUMBER, IDENTIFIER,
     PLUS, MINUS, STAR, SLASH, PERCENT, CARET,
