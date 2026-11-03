@@ -172,7 +172,7 @@ private class Parser(private val tokens: List<Token>) { //but main passes the pa
             )
         }
 
-        return expression
+        return expression //then we return the fully realized parsed expression at the end (this i dont know how it looks like)
     }
 
     private fun parseAddition(): Expression { //recursive-descent parsing, breaks down into identifying smaller tasks, stalgcm type
