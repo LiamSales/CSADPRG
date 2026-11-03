@@ -109,14 +109,8 @@ private class Lexer(private val source: String) { //converts raw source code int
     }
 }
 
-// The AST represents the structure of an expression.
 
-// The lexer identifies tokens, but tokens alone do not tell us
-// how operations are grouped. The parser creates this tree.
-
-// A sealed interface restricts the direct types that implement
-// Expression, allowing Kotlin to check the cases in a when block.
-
+//================so at this point everything is successfully tokenized================
 
 private sealed interface Expression //shared type, different dataclasses have a common type
 
@@ -144,30 +138,33 @@ private data class FunctionExpression(
     val arguments: List<Expression>
 ) : Expression // sqrt, et al
 
-    private fun current(): Token = tokens[position]
+private fun current(): Token = tokens[position]
 
-    private fun advance(): Token = tokens[position++]
+private fun advance(): Token = tokens[position++]
 
-    private fun match(type: TokenType): Boolean {
-        if (current().type != type) return false
+private fun match(type: TokenType): Boolean {
+    if (current().type != type) return false
 
-        advance()
-        return true
+    advance()
+    return true
+}
+
+private fun expect(type: TokenType) {
+    if (!match(type)) {
+        throw CalculatorException(
+            "Expected $type, found '${current().text}'"
+        )
     }
+}
 
-    private fun expect(type: TokenType) {
-        if (!match(type)) {
-            throw CalculatorException(
-                "Expected $type, found '${current().text}'"
-            )
-        }
-    }
+// all just definitions but no initiations
 
-private class Parser(private val tokens: List<Token>) {
+private class Parser(private val tokens: List<Token>) { //but main passes the parameter (which is defined locally in main, not globally
+    
     private var position = 0 //new beginning were done with the lexer
 
     fun parse(): Expression {
-        val expression = parseAddition() //
+        val expression = parseAddition() //so everything passes through all steps, because everything gets parse()
 
         if (current().type != TokenType.EOF) {
             throw CalculatorException(
