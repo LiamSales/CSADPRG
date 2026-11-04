@@ -37,7 +37,7 @@ private class Lexer(private val source: String) { //converts raw source code int
                 c.isLetter() || c == '_' ->
                     tokens.add(readIdentifier())
 
-                else -> {
+                else -> { //we dont do equals then get the value of the variable
                     val type = when (c) {
                         '+' -> TokenType.PLUS
                         '-' -> TokenType.MINUS
@@ -165,7 +165,7 @@ private class Parser(private val tokens: List<Token>) { //but main passes the pa
     
     private var position = 0 //new beginning were done with the lexer
 
-    fun parse(): Expression {
+    fun parse(): Expression { //notice how parsers  have no parameters and argyments, they utilize the class parameter instead. One object instantiation, one equation.
         val expression = parseAddition() //so everything passes through all steps, because everything gets parse()
 
         if (current().type != TokenType.EOF) {
@@ -234,7 +234,7 @@ private class Parser(private val tokens: List<Token>) { //but main passes the pa
                 operator,
                 parseUnary()// return then recurse, basically just go back but current is in a new postion because its not declared in this functions scope
             )
-        }
+        } //does it just skip this? yes. because if it has, anyway itll call itself again with the same thing
 
         return parsePower() //but then nothing more after this for unary, its only job was to get if the first ever char is a +/-, then it just proceeds to power
     }
