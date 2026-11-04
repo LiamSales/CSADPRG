@@ -230,18 +230,20 @@ private class Parser(private val tokens: List<Token>) { //but main passes the pa
             val operator = advance().type //new var, operator is equal to the sign, but why do we advance rather than current? so KOTLIN gets type before evaulating exp
 //POSTFIX USE VARIABLE CURRENT VALUE IN EXPRESSION AND THEN ++ BECAUSE ++ IS AFTER, so ok we save the operator
             
-            return UnaryExpression( //why do we return immediately???
+            return UnaryExpression( //our first actual return! goes to itself, so then itll just go to parsepower (unless theres like a +-+--- (how does this work???) same way tbh
                 operator,
                 parseUnary()// return then recurse, basically just go back but current is in a new postion because its not declared in this functions scope
             )
         } //does it just skip this? yes. because if it has, anyway itll call itself again with the same thing
 
         return parsePower() //but then nothing more after this for unary, its only job was to get if the first ever char is a +/-, then it just proceeds to power
+        //so all roads lead it to parsing power.
     }
 
     private fun parsePower(): Expression {
         
         val left = parsePrimary() //but left here is just another name for expression, we know its not a caret
+        //so we dont check carets yet, when we finish this we do the caret
 
         if (match(TokenType.CARET)) { // we already have types of expressions defined up there as data classes, and additions base case gives us a binex
             return BinaryExpression( //left operator right
@@ -251,7 +253,7 @@ private class Parser(private val tokens: List<Token>) { //but main passes the pa
             ) //yes exponent (operand, operator, operand)
         }
 
-        return left // no exponent default case
+        return left 
     }
 
     //but how do we know only parentheses and numbers get passed to this???
