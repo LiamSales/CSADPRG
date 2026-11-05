@@ -179,12 +179,12 @@ private class Parser(private val tokens: List<Token>) { //but main passes the pa
 
     private fun parseAddition(): Expression { //recursive-descent parsing, breaks down into identifying smaller tasks, stalgcm type
         
-        var expression = parseMultiplication()
+        var expression = parseMultiplication() //so it gets the first number, while token (class var) is directed to the next 
 
         while (
             current().type == TokenType.PLUS ||
             current().type == TokenType.MINUS
-        ) {
+        ) { //while checks the next
             val operator = advance().type
             val right = parseMultiplication()
 
@@ -198,7 +198,8 @@ private class Parser(private val tokens: List<Token>) { //but main passes the pa
         return expression
     }
 
-    private fun parseMultiplication(): Expression { //we simply follow the JVM compiler precedence,now it CAN work without this but takes more work and we add a leading 0 anyway
+    private fun parseMultiplication(): Expression { //we simply follow the JVM compiler precedence,now it CAN work without this but takes more work and we add a leading 0 
+        
         var expression = parseUnary()
 
         while (
@@ -245,6 +246,8 @@ private class Parser(private val tokens: List<Token>) { //but main passes the pa
         val left = parsePrimary() //but left here is just another name for expression, we know its not a caret
         //so we dont check carets yet, when we finish this we do the caret
 
+        //so primary parsing is mandatory before caret
+
         if (match(TokenType.CARET)) { // we already have types of expressions defined up there as data classes, and additions base case gives us a binex
             return BinaryExpression( //left operator right
                 left,
@@ -260,7 +263,7 @@ private class Parser(private val tokens: List<Token>) { //but main passes the pa
     
     private fun parsePrimary(): Expression { //where the real parsing happens?? recognizes the basic building blocks of expressions.
         
-        val token = current() //we save here then THIS is whats used,
+        val token = current()
 
         when (token.type) {
             TokenType.NUMBER -> { //remember everything is already tokenized, so its all sorted and handled by this point. we just need to arrange stuff
@@ -275,7 +278,7 @@ private class Parser(private val tokens: List<Token>) { //but main passes the pa
                     )
 
                 return NumberExpression(value) //this gets passed back to the other parsers
-            }
+            } //so when its a number itll go back to previous functions until the next token is consumed (* gets caught earlier than +)
 
             TokenType.IDENTIFIER -> {
                 
