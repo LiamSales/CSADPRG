@@ -181,18 +181,22 @@ private class Parser(private val tokens: List<Token>) { //but main passes the pa
         
         var expression = parseMultiplication() //so it gets the first number, while token (class var) is directed to the next 
 
-        while (
+        //token now at next (thanks to the advance in the following functions)
+        //whats important is that expression is saved here specifically in addition
+        while ( 
             current().type == TokenType.PLUS ||
             current().type == TokenType.MINUS
         ) { //while checks the next
-            val operator = advance().type
-            val right = parseMultiplication()
+            val operator = advance().type //operator saves the plus or minus, goes to the next
+            val right = parseMultiplication() //then we do the same things (EXCEPT ONLY AFTER THE OPERATOR, EXPRESSION HAS BEEN SAVED ALREADY
 
+            //so what if right has an addition inside it? wouldnt it skip?
+            
             expression = BinaryExpression(
                 expression,
                 operator,
                 right
-            )
+            ) //fully save a binex and return to parse(), however what if its more than one operator??? this doesnt call itself for addition rechecking???
         }
 
         return expression
