@@ -197,9 +197,10 @@ private class Parser(private val tokens: List<Token>) { //but main passes the pa
                 operator,
                 right
             ) //fully save a binex and return to parse(), however what if its more than one operator??? this doesnt call itself for addition rechecking???
-        }
+        }// because its in a while loop so current, then itll advance, then the end of "right" just advances again then we repeat the loop
 
-        return expression
+        //because the expression is saved in a recursive typa thing, we get left associativity
+        return expression //final product will look like (((2 + 3) + 4) + 5)
     }
 
     private fun parseMultiplication(): Expression { //we simply follow the JVM compiler precedence,now it CAN work without this but takes more work and we add a leading 0 
@@ -210,19 +211,19 @@ private class Parser(private val tokens: List<Token>) { //but main passes the pa
             current().type == TokenType.STAR ||
             current().type == TokenType.SLASH ||
             current().type == TokenType.PERCENT
-        ) {
+        ) { //on the primary returns and were at these opeators, we dont go back to addition, completely forget about addition
             val operator = advance().type
-            val right = parseUnary()
+            val right = parseUnary()  //were here because we go set a checkpoint
 
             expression = BinaryExpression(
-                expression,
+                expression, 
                 operator,
-                right
+                right //expressions are NOT strings, nether are operators
             )
         }
 
-        return expression
-    }
+        return expression //so the expression we give addition will be a ((x*y) *z) ... one single expression, then this will be nested
+    }// remember expressions are objects HOLDING double (or string). they have an attribute called value which we get!
 
     private fun parseUnary(): Expression {
         
@@ -284,6 +285,9 @@ private class Parser(private val tokens: List<Token>) { //but main passes the pa
                 return NumberExpression(value) //this gets passed back to the other parsers
             } //so when its a number itll go back to previous functions until the next token is consumed (* gets caught earlier than +)
 
+
+            //ok i get passing number expressions now
+            
             TokenType.IDENTIFIER -> {
                 
                 advance()
