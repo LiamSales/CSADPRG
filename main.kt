@@ -168,6 +168,8 @@ private class Parser(private val tokens: List<Token>) { //but main passes the pa
     fun parse(): Expression { //notice how parsers  have no parameters and argyments, they utilize the class parameter instead. One object instantiation, one equation.
         val expression = parseAddition() //so everything passes through all steps, because everything gets parse()
 
+        //all the nested expressions (object holding object, are stored here
+
         if (current().type != TokenType.EOF) {
             throw CalculatorException(
                 "Unexpected token '${current().text}'" //If parsing finishes but there are still unexpected tokens, the parser throws an exception
@@ -211,7 +213,7 @@ private class Parser(private val tokens: List<Token>) { //but main passes the pa
             current().type == TokenType.STAR ||
             current().type == TokenType.SLASH ||
             current().type == TokenType.PERCENT
-        ) { //on the primary returns and were at these opeators, we dont go back to addition, completely forget about addition
+        ) { //on the primary returns and were at these opeators, we dont go back to addition, completely forget about addition, so while */% keeps going
             val operator = advance().type
             val right = parseUnary()  //were here because we go set a checkpoint
 
@@ -294,13 +296,15 @@ private class Parser(private val tokens: List<Token>) { //but main passes the pa
 
                 if (match(TokenType.LPAREN)) {
                     val arguments = mutableListOf<Expression>()
+                    //new list of expressions
 
                     if (current().type != TokenType.RPAREN) {
-                        do {
+                        do { 
                             arguments.add(parseAddition())
                         } while (match(TokenType.COMMA))
                     }
 
+                    //focus on tracing this next, figure out the difference between this and the next function
                     expect(TokenType.RPAREN)
 
                     return FunctionExpression(
