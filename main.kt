@@ -91,7 +91,7 @@ private class Lexer(private val source: String) { //converts raw source code int
         return Token(TokenType.NUMBER, text)
     }
 
-    private fun readIdentifier(): Token { //probably for coeficcients, just non operation and non-number/decimal
+    private fun readIdentifier(): Token {
         val start = position
 
         while (
@@ -105,8 +105,8 @@ private class Lexer(private val source: String) { //converts raw source code int
         }
 
         return Token(
-            TokenType.IDENTIFIER,
-            source.substring(start, position)
+            TokenType.IDENTIFIER, //it can have symbols, where is the break case?
+            source.substring(start, position) //as long as it doesnt start with the number, it could be a letter, string, underscore, just nothing that wouldnt be a function name
         )
     }
 }
@@ -255,6 +255,8 @@ private class Parser(private val tokens: List<Token>) { //but main passes the pa
 
         //so primary parsing is mandatory before caret
 
+        //fix everything before caret
+
         if (match(TokenType.CARET)) { // we already have types of expressions defined up there as data classes, and additions base case gives us a binex
             return BinaryExpression( //left operator right
                 left,
@@ -263,7 +265,7 @@ private class Parser(private val tokens: List<Token>) { //but main passes the pa
             ) //yes exponent (operand, operator, operand)
         }
 
-        return left 
+        return left //this will only be reached if no caret (basically an else), final return
     }
 
     //but how do we know only parentheses and numbers get passed to this???
@@ -290,11 +292,11 @@ private class Parser(private val tokens: List<Token>) { //but main passes the pa
 
             //ok i get passing number expressions now
             
-            TokenType.IDENTIFIER -> {
+            TokenType.IDENTIFIER -> { 
                 
                 advance()
 
-                if (match(TokenType.LPAREN)) {
+                if (match(TokenType.LPAREN)) { //this isnt actually part of the 
                     val arguments = mutableListOf<Expression>()
                     //new list of expressions
 
