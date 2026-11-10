@@ -97,7 +97,7 @@ private class Lexer(private val source: String) { //converts raw source code int
         while (
             position < source.length &&
             (
-                source[position].isLetterOrDigit() ||
+                source[position].isLetterOrDigit() || //not defined function???
                 source[position] == '_'
             )
         ) {
@@ -105,7 +105,7 @@ private class Lexer(private val source: String) { //converts raw source code int
         }
 
         return Token(
-            TokenType.IDENTIFIER, //it can have symbols, where is the break case?
+            TokenType.IDENTIFIER,
             source.substring(start, position) //as long as it doesnt start with the number, it could be a letter, string, underscore, just nothing that wouldnt be a function name
         )
     }
@@ -294,14 +294,14 @@ private class Parser(private val tokens: List<Token>) { //but main passes the pa
             
             TokenType.IDENTIFIER -> { 
                 
-                advance()
+                advance() //so skips the variable completely??
 
-                if (match(TokenType.LPAREN)) { //this isnt actually part of the 
+                if (match(TokenType.LPAREN)) { // then doesnt go to number but goes to LParen??
                     val arguments = mutableListOf<Expression>()
                     //new list of expressions
 
                     if (current().type != TokenType.RPAREN) {
-                        do { 
+                        do { //whatever is inside the parent, we add as an argument (why a list?) parse addition will do more than one?
                             arguments.add(parseAddition())
                         } while (match(TokenType.COMMA))
                     }
