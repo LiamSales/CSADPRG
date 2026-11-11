@@ -294,31 +294,32 @@ private class Parser(private val tokens: List<Token>) { //but main passes the pa
             
             TokenType.IDENTIFIER -> { 
                 
-                advance() //so skips the variable completely??
+                advance() //token is still saved 
 
-                if (match(TokenType.LPAREN)) { // then doesnt go to number but goes to LParen??
+                if (match(TokenType.LPAREN)) { //because string() is a function but string + is a variable, so we see whats beside the string
+                    // parenthesis multiplication doesnt work since all operators must be explicit
+                    
                     val arguments = mutableListOf<Expression>()
-                    //new list of expressions
 
                     if (current().type != TokenType.RPAREN) {
-                        do { //whatever is inside the parent, we add as an argument (why a list?) parse addition will do more than one?
-                            arguments.add(parseAddition())
-                        } while (match(TokenType.COMMA))
-                    }
+                        do { //
+                            arguments.add(parseAddition()) //inside the parenthesis we have parameters and commas (like a real function)
+                        } while (match(TokenType.COMMA)) //The parser needs a flexible collection to store the expressions passed into the function.
+                    } //It stores AST nodes, not raw tokens or numbers
+                    //it stores EXPRESSIONS
 
-                    //focus on tracing this next, figure out the difference between this and the next function
-                    expect(TokenType.RPAREN)
+                    expect(TokenType.RPAREN) //checks whether current tokem is this, and if not then it errors
 
                     return FunctionExpression(
-                        token.text,
-                        arguments
-                    )
+                        token.text, //we still saved the old token before advancing
+                        arguments //then a map
+                    ) //this is if theres a parenthesis then it all ends here
                 }
 
-                return VariableExpression(token.text)
+                return VariableExpression(token.text) //but if we have a string, and no parenthesis next to it then its a variable, so we just return string
             }
 
-            TokenType.LPAREN -> {
+            TokenType.LPAREN -> { //figure out how it isolates and prioritizes parenthesis
                 advance()
                 val expression = parseAddition()
                 expect(TokenType.RPAREN)
