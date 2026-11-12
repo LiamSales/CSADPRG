@@ -319,25 +319,26 @@ private class Parser(private val tokens: List<Token>) { //but main passes the pa
                 return VariableExpression(token.text) //but if we have a string, and no parenthesis next to it then its a variable, so we just return string
             }
 
+            //so we basically did both variable and funciton call, as well as numbers
+
             TokenType.LPAREN -> { //figure out how it isolates and prioritizes parenthesis
-                advance()
-                val expression = parseAddition()
+                advance() //but if the very first thing it sees is this parenthesis
+                val expression = parseAddition() //we parse and wait for an end
+                //everything is obv self contained and isolated here
                 expect(TokenType.RPAREN)
-                return expression
-            }
+                
+                return expression //so when it returns an expression the pointer to this obj is everything in the parenthesis
+            } //imagine the tree going back up
 
             else -> throw CalculatorException(
                 "Expected a number, variable, or parenthesized expression"
             )
         }
     }
-} //figure out why only identifie and number, no variables at all.
+} 
 
-//actually trace parsing completely on paper
 
-// ============================================================
-// 4. EXPRESSION EVALUATOR
-// ============================================================
+// ok good checkpoint, everything is basically in an AST tree
 
 private class Evaluator(
     private val variables: Map<String, Double>
