@@ -341,10 +341,10 @@ private class Parser(private val tokens: List<Token>) { //but main passes the pa
 // ok good checkpoint, everything is basically in an AST tree
 
 private class Evaluator(
-    private val variables: Map<String, Double>
+    private val variables: Map<String, Double> //class level var
 ) {
     // Higher-order functions and function references.
-    private val functions: Map<String, (Double) -> Double> =
+    private val functions: Map<String, (Double) -> Double> = //what does this mean
         mapOf(
             "sqrt" to ::sqrt,
             "abs" to ::abs,
@@ -353,7 +353,7 @@ private class Evaluator(
             "tan" to ::tan,
             "log" to ::log10,
             "ln" to ::ln
-        )
+        ) // figure out what :: means
 
     fun evaluate(expression: Expression): Double {
         val result = when (expression) {
