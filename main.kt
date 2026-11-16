@@ -355,6 +355,8 @@ private class Evaluator(
             "log" to ::log10,
             "ln" to ::ln
         ) // therefore, all the strings are mapped to the pre-defined ::func() operators (called as variables), now thats a new thing!
+        //so for example we do squareroot to ::sqrt, then squareroot(25.0) becomes 5.0? then if we map it to a void function it returns null?
+        //minor correction, yes then no it doesnt return null it gives us Unit, which i should do independent research on
 
     fun evaluate(expression: Expression): Double {
         val result = when (expression) {
