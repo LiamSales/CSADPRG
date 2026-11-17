@@ -380,7 +380,7 @@ private class Evaluator(
                     ?: throw CalculatorException(
                         "Unknown variable '${expression.name}'"
                     )
-            } //is this an in? review unit type and elvis operator
+            } //is this an in? review unit type and elvis operator;;; unit is not null, unit is basically a flag var that indicates function ran successfully
 
             is UnaryExpression -> {
                 val value = evaluate(expression.operand)
