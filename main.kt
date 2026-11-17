@@ -371,16 +371,19 @@ private class Evaluator(
         
     fun evaluate(expression: Expression): Double { //main solving thing????
         
-        val result = when (expression) {
+        val result = when (expression) { //when clause is a FUNCTION AS A VARIABLE 
             is NumberExpression -> expression.value //because expression is an object, we very well could have just used the double and skipped the object but then its harder
             //easier to code with INTERFACE!!
+            //RESULT BECOMES EXPRESSION.VALUE
 
             is VariableExpression -> { //evaluate is our only necessary function so why werent variables declared in here? i assume we will call evaluate more than once, thats a turning point
                 variables[expression.name] //assume variables is already properly declared and string double, not double? so all have names and values
                     ?: throw CalculatorException(
                         "Unknown variable '${expression.name}'"
                     )
-            } //is this an in? review unit type and elvis operator;;; unit is not null, unit is basically a flag var that indicates function ran successfully
+            } //when expression is variable (and were sure of that) 
+            //IF THE VARIABLE IS NON NULL THEN WE GET RESULT = NAME; WHEN ITS NULL, IT BECOMES EQUAL TO THE THROW CALCULATOR EXPRESSION (SO WE CAN CALL RESULT AS A EXCEPTION???)
+            //IS THE DATA TYPE OF RESULT UP IN THE AIR? KOTLIN IS A COMPILED AND NOT INTERPRETTED LANGUAGE
 
             is UnaryExpression -> {
                 val value = evaluate(expression.operand)
