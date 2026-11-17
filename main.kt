@@ -166,6 +166,7 @@ private class Parser(private val tokens: List<Token>) { //but main passes the pa
     private var position = 0 //new beginning were done with the lexer
 
     fun parse(): Expression { //notice how parsers  have no parameters and argyments, they utilize the class parameter instead. One object instantiation, one equation.
+        
         val expression = parseAddition() //so everything passes through all steps, because everything gets parse()
 
         //all the nested expressions (object holding object, are stored here
@@ -193,6 +194,10 @@ private class Parser(private val tokens: List<Token>) { //but main passes the pa
             val right = parseMultiplication() //then we do the same things (EXCEPT ONLY AFTER THE OPERATOR, EXPRESSION HAS BEEN SAVED ALREADY
 
             //so what if right has an addition inside it? wouldnt it skip?
+            //no because at the end current will recheck again if plus or minus
+
+            //so expression is settled, then operator, then right, but wouldnt right just be overriden everytime??
+            //right does not override because expression saves the current version bellow
             
             expression = BinaryExpression(
                 expression,
@@ -203,6 +208,7 @@ private class Parser(private val tokens: List<Token>) { //but main passes the pa
 
         //because the expression is saved in a recursive typa thing, we get left associativity
         return expression //final product will look like (((2 + 3) + 4) + 5)
+        //left version is declared once out of the loop, then within the loop it gets refreshed as one expression including right
     }
 
     private fun parseMultiplication(): Expression { //we simply follow the JVM compiler precedence,now it CAN work without this but takes more work and we add a leading 0 
@@ -341,7 +347,7 @@ private class Parser(private val tokens: List<Token>) { //but main passes the pa
 // ok good checkpoint, everything is basically in an AST tree
 
 private class Evaluator(
-    private val variables: Map<String, Double> //class level var, therefore used universally atp, all variables are name/value (could the double be null for unknown?
+    private val variables: Map<String, Double> 
 ) {
     // Higher-order functions and function references.
     //NEW CONCCEPT... FUNCTION TYPE!!
@@ -358,6 +364,14 @@ private class Evaluator(
         //so for example we do squareroot to ::sqrt, then squareroot(25.0) becomes 5.0? then if we map it to a void function it returns null?
         //minor correction, yes then no it doesnt return null it gives us Unit, which i should do independent research on
 
+
+        
+        //recap, everything has been tokenized, we have exactly one lexer class, with a tokens return value in its main function
+        // so ok everything passes through that one function EZ
+
+        //the tokens map gets passed to parser with specifically parse() giving a return value of an AST tree, 
+    // now we forget the tokens map, then assuming everything defaults back to addition ... expression operation expression... thats the law
+        
     fun evaluate(expression: Expression): Double {
         val result = when (expression) {
             is NumberExpression -> expression.value
