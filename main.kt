@@ -347,9 +347,7 @@ private class Parser(private val tokens: List<Token>) { //but main passes the pa
 // ok good checkpoint, everything is basically in an AST tree
 
 private class Evaluator(
-    
-    private val variables: Map<String, Double> //why is this a class variable rather than the single once and for all function variable unlike the once used parser and lexer?
-        
+    private val variables: Map<String, Double> //this is not just a class variable, this is a parameter, however why isnt it set?
 ) {
     //NEW CONCCEPT... FUNCTION TYPE!!
     private val functions: Map<String, (Double) -> Double> = //string and function (function AS AN ARGUMENT!) gets double, RETURNS DOUBLE???
@@ -364,8 +362,6 @@ private class Evaluator(
         ) // therefore, all the strings are mapped to the pre-defined ::func() operators (called as variables), now thats a new thing!
         //so for example we do squareroot to ::sqrt, then squareroot(25.0) becomes 5.0? then if we map it to a void function it returns null?
         //minor correction, yes then no it doesnt return null it gives us Unit, which i should do independent research on
-
-
         
         //recap, everything has been tokenized, we have exactly one lexer class, with a tokens return value in its main function
         // so ok everything passes through that one function EZ
@@ -379,12 +375,12 @@ private class Evaluator(
             is NumberExpression -> expression.value //because expression is an object, we very well could have just used the double and skipped the object but then its harder
             //easier to code with INTERFACE!!
 
-            is VariableExpression -> { //evaluate is our only necessary function so why werent variables declared in here?
-                variables[expression.name] //
+            is VariableExpression -> { //evaluate is our only necessary function so why werent variables declared in here? i assume we will call evaluate more than once, thats a turning point
+                variables[expression.name] //assume variables is already properly declared and string double, not double? so all have names and values
                     ?: throw CalculatorException(
                         "Unknown variable '${expression.name}'"
                     )
-            }
+            } //is this an in? review unit type and elvis operator
 
             is UnaryExpression -> {
                 val value = evaluate(expression.operand)
