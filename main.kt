@@ -210,6 +210,7 @@ private class Parser(private val tokens: List<Token>) { //but main passes the pa
         return expression //final product will look like (((2 + 3) + 4) + 5)
         //left version is declared once out of the loop, then within the loop it gets refreshed as one expression including right
     }
+    //we can bypass the binary expression part dont forget, then just simply end with a unary
 
     private fun parseMultiplication(): Expression { //we simply follow the JVM compiler precedence,now it CAN work without this but takes more work and we add a leading 0 
         
@@ -244,8 +245,8 @@ private class Parser(private val tokens: List<Token>) { //but main passes the pa
             val operator = advance().type //new var, operator is equal to the sign, but why do we advance rather than current? so KOTLIN gets type before evaulating exp
 //POSTFIX USE VARIABLE CURRENT VALUE IN EXPRESSION AND THEN ++ BECAUSE ++ IS AFTER, so ok we save the operator
             
-            return UnaryExpression( //our first actual return! goes to itself, so then itll just go to parsepower (unless theres like a +-+--- (how does this work???) same way tbh
-                operator,
+            return UnaryExpression( //our first actual return, it will only go back to itself and recurse if +/- and get an embedded unary
+                operator, // remember +-+- is 4 different tokens and we only advance later during parse primary
                 parseUnary()// return then recurse, basically just go back but current is in a new postion because its not declared in this functions scope
             )
         } //does it just skip this? yes. because if it has, anyway itll call itself again with the same thing
@@ -344,8 +345,6 @@ private class Parser(private val tokens: List<Token>) { //but main passes the pa
 } 
 
 
-// ok good checkpoint, everything is basically in an AST tree
-
 private class Evaluator(
     private val variables: Map<String, Double> //this is not just a class variable, this is a parameter, however why isnt it set?
 ) {
@@ -369,7 +368,7 @@ private class Evaluator(
         //the tokens map gets passed to parser with specifically parse() giving a return value of an AST tree, 
     // now we forget the tokens map, then assuming everything defaults back to addition ... expression operation expression... thats the law
         
-    fun evaluate(expression: Expression): Double { //main solving thing????
+    fun evaluate(expression: Expression): Double { //main solving thing????, remember the first parameter is the deepest expression so
         
         val result = when (expression) { //when clause is a FUNCTION AS A VARIABLE 
             is NumberExpression -> expression.value //because expression is an object, we very well could have just used the double and skipped the object but then its harder
@@ -386,10 +385,10 @@ private class Evaluator(
             //IS THE DATA TYPE OF RESULT UP IN THE AIR? KOTLIN IS A COMPILED AND NOT INTERPRETTED LANGUAGE
 
             is UnaryExpression -> {
-                val value = evaluate(expression.operand)
-
+                val value = evaluate(expression.operand) //on the rare case that - n then higher precedence */% HOWEVER no succeeding - or + after the number token
+                //recursion unlike the one on top, new strat figure out the play
                 when (expression.operator) {
-                    TokenType.PLUS -> value
+                    TokenType.PLUS -> value// value is inherently a double?
                     TokenType.MINUS -> -value
                     else -> error("Invalid unary operator")
                 }
