@@ -386,9 +386,10 @@ private class Evaluator(
 
             is UnaryExpression -> {
                 val value = evaluate(expression.operand) //on the rare case that - n then higher precedence */% HOWEVER no succeeding - or + after the number token
-                //recursion unlike the one on top, new strat figure out the play
+                //recursion unlike the one on top, new strat figure out the play, so we call the functoin again if its a unary, and we evaluate only the number (it calls number expression)
+                //THEN afterwards we handle the operator??
                 when (expression.operator) {
-                    TokenType.PLUS -> value// value is inherently a double?
+                    TokenType.PLUS -> value// value is inherently a double? the operator is a token, that was its datatype, do we automatically negate the value?
                     TokenType.MINUS -> -value
                     else -> error("Invalid unary operator")
                 }
