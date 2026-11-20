@@ -375,6 +375,8 @@ private class Evaluator(
             //easier to code with INTERFACE!!
             //RESULT BECOMES EXPRESSION.VALUE
 
+
+//sorry whre does variables array come from?
             is VariableExpression -> { //evaluate is our only necessary function so why werent variables declared in here? i assume we will call evaluate more than once, thats a turning point
                 variables[expression.name] //assume variables is already properly declared and string double, not double? so all have names and values
                     ?: throw CalculatorException(
