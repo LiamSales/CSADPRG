@@ -393,7 +393,7 @@ private class Evaluator(
                     TokenType.MINUS -> -value //this is the only necessary
                     else -> error("Invalid unary operator")
                 }
-            }
+            } //so this changes the value because the next one also does, basically the next case is super self explanatory 
 
             is BinaryExpression -> {
                 val left = evaluate(expression.left)
