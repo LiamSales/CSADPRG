@@ -346,7 +346,7 @@ private class Parser(private val tokens: List<Token>) { //but main passes the pa
 
 
 private class Evaluator(
-    private val variables: Map<String, Double> //this is not just a class variable, this is a parameter, however why isnt it set?
+    private val variables: Map<String, Double> //we assume all the variables are already sorted to key value pairs, and i assume we sequentially get each variable by passing through the tokenized array
 ) {
     //NEW CONCCEPT... FUNCTION TYPE!!
     private val functions: Map<String, (Double) -> Double> = //string and function (function AS AN ARGUMENT!) gets double, RETURNS DOUBLE???
@@ -375,8 +375,6 @@ private class Evaluator(
             //easier to code with INTERFACE!!
             //RESULT BECOMES EXPRESSION.VALUE
 
-
-//sorry whre does variables array come from?
             is VariableExpression -> { //evaluate is our only necessary function so why werent variables declared in here? i assume we will call evaluate more than once, thats a turning point
                 variables[expression.name] //assume variables is already properly declared and string double, not double? so all have names and values
                     ?: throw CalculatorException(
