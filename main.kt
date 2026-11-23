@@ -422,19 +422,19 @@ private class Evaluator(
                         left % right
                     }
 
-                    TokenType.CARET -> left.pow(right)
+                    TokenType.CARET -> left.pow(right) //pre-defined function
 
                     else -> error("Invalid binary operator")
                 }
             }
 
-            is FunctionExpression -> {
-                val function = functions[expression.name]
+            is FunctionExpression -> { //remember we mapped string to double(double) functions, so the choices are already defined in the map atp
+                val function = functions[expression.name] //function expressions are (token.text which is the name, list of expressions which is the interface ),
                     ?: throw CalculatorException(
                         "Unknown function '${expression.name}'"
-                    )
+                    ) //what are we equating how does it work
 
-                if (expression.arguments.size != 1) {
+                if (expression.arguments.size != 1) { //why do we do only 1 if our parser allows a list
                     throw CalculatorException(
                         "Function '${expression.name}' expects one argument"
                     )
