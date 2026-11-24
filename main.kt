@@ -112,8 +112,6 @@ private class Lexer(private val source: String) { //converts raw source code int
 }
 
 
-//================so at this point everything is successfully tokenized================
-
 private sealed interface Expression //shared type, different dataclasses have a common type
 
 private data class NumberExpression(
@@ -429,18 +427,18 @@ private class Evaluator(
             }
 
             is FunctionExpression -> { //remember we mapped string to double(double) functions, so the choices are already defined in the map atp
-                val function = functions[expression.name] //function expressions are (token.text which is the name, list of expressions which is the interface ),
+                val function = functions[expression.name] //val function is equal to the value (double->double) of functions["sqrt"], name being the key, 
                     ?: throw CalculatorException(
                         "Unknown function '${expression.name}'"
-                    ) //what are we equating how does it work
+                    ) //if null, (does not appear in our key value map list, then nvm exception time
 
-                if (expression.arguments.size != 1) { //why do we do only 1 if our parser allows a list
+                if (expression.arguments.size != 1) { //why do we do only 1 if our parser allows a list ; because of the limitations of our evaluator (LOCALLY), however.... we can add a case with and define it here
                     throw CalculatorException(
                         "Function '${expression.name}' expects one argument"
-                    )
+                    )//This is an example of separating syntax recognition from semantic validation.
                 }
 
-                function(evaluate(expression.arguments.single()))
+                function(evaluate(expression.arguments.single())) //.single() retrieves the only element in our argument list., by the end of this we should successfully have a function call
             }
         }
 
