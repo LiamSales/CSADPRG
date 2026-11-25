@@ -427,7 +427,8 @@ private class Evaluator(
             }
 
             is FunctionExpression -> { //remember we mapped string to double(double) functions, so the choices are already defined in the map atp
-                val function = functions[expression.name] //val function is equal to the value (double->double) of functions["sqrt"], name being the key, 
+                val function = functions[expression.name] //val function is equal to the value (double->double) of functions["sqrt"], name being the key,
+                // function is equal to the call but not the result??? (idk?) yes based on the later line
                     ?: throw CalculatorException(
                         "Unknown function '${expression.name}'"
                     ) //if null, (does not appear in our key value map list, then nvm exception time
@@ -438,11 +439,13 @@ private class Evaluator(
                     )//This is an example of separating syntax recognition from semantic validation.
                 }
 
-                function(evaluate(expression.arguments.single())) //.single() retrieves the only element in our argument list., by the end of this we should successfully have a function call
+                function(evaluate(expression.arguments.single())) //.single() retrieves the only element in our argument list, why not use the regular retrieve[0]
+                //generally safer, if a more sophisticated function is available USE IT.
+                //recursive case so we basically go sin(evaluate (tan (x))
             }
         }
 
-        if (!result.isFinite()) {
+        if (!result.isFinite()) { //how does this work behind the scenes???
             throw CalculatorException(
                 "Result is not a finite real number"
             )
