@@ -443,15 +443,18 @@ private class Evaluator(
                 //generally safer, if a more sophisticated function is available USE IT.
                 //recursive case so we basically go sin(evaluate (tan (x))
             }
-        }
+        } //when clause ends here so result = function return
 
         if (!result.isFinite()) { //how does this work behind the scenes???
-            throw CalculatorException(
+            throw CalculatorException( //Math.abs(number) <= Double.MAX_VALUE // max_value is identical in every device
+                //for double its 1.7976931348623157E308; IEEE standard (universal for all PL)
+                //Certain math operations naturally return infinity instead of crashing, 0/0 is infinity, values over the max val are
+                //however max val incremented is max val
                 "Result is not a finite real number"
             )
         }
 
-        return result
+        return result // finally real calculator, DONE
     }
 }
 
