@@ -458,45 +458,39 @@ private class Evaluator(
     }
 }
 
-// ============================================================
-// 5. DATA MODELS
-// ============================================================
-
 private data class HistoryEntry(
     val input: String,
     val result: String
-)
-
-// ============================================================
-// 6. CALCULATOR AND CLI
-// ============================================================
+) //a class then we make a list of history
 
 private class Calculator {
     private val variables = mutableMapOf(
         "pi" to PI,
-        "e" to E
+        "e" to E //both defined in math, however, not case sensitive, there exists a map of variables now, but thats all
     )
 
-    private val history = mutableListOf<HistoryEntry>()
+    private val history = mutableListOf<HistoryEntry>() //like i said
 
-    fun run() {
+    fun run() { //basically our main
         println("Kotlin Calculator")
         println("Type 'help' for commands, or 'exit' to quit.")
 
-        while (true) {
+        while (true) { //infinite loop
             print("> ")
 
-            val input = readlnOrNull() ?: break
-            val line = input.trim()
+            val input = readlnOrNull() ?: break //read one line, if null break outside the loop (skip)
+            val line = input.trim() //clean out whitespaces
 
-            if (line.isEmpty()) continue
+            if (line.isEmpty()) continue //restart loop if line is empty, therefore itll go back to print >
+
+            //learn to differentiate null line from empty like
 
             try {
-                when (line.lowercase()) {
+                when (line.lowercase()) { //no case sensitivity
                     "exit", "quit" -> {
                         println("Goodbye.")
                         return
-                    }
+                    }//either exit or quit to go out
 
                     "help" -> showHelp()
                     "history" -> showHistory()
@@ -505,7 +499,7 @@ private class Calculator {
                         println("History cleared.")
                     }
 
-                    "variables" -> showVariables()
+                    "variables" -> showVariables() //this is where we focus on
 
                     "clearvars" -> {
                         variables.clear()
